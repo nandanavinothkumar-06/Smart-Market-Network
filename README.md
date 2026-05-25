@@ -320,10 +320,7 @@ VIT Vellore
 # GitHub Repository
 
 Repository Link:
-
-```bash
-[(https://github.com/nandanavinothkumar-06/Smart-Market-Network)]
-```
+https://github.com/nandanavinothkumar-06/Smart-Market-Network
 
 ---
 
