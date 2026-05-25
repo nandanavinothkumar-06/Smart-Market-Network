@@ -1,12 +1,22 @@
 # Smart Market Network
 
+![Status](https://img.shields.io/badge/Status-Active-success)
+![Python](https://img.shields.io/badge/Python-3.x-blue)
+![FastAPI](https://img.shields.io/badge/FastAPI-Backend-green)
+![Frontend](https://img.shields.io/badge/Frontend-HTML%2FCSS%2FJS-orange)
+
 ## Overview
 
-Smart Market Network is a full-stack digital marketplace and smart retail management platform developed to simplify inventory management, customer interaction, and product handling for local retailers and small businesses.
+Smart Market Network is a full-stack marketplace and retail management platform designed to help local retailers manage inventory, products, and customer interactions through a scalable digital system.
 
-The project combines a responsive frontend interface with a FastAPI-powered backend to create a scalable marketplace solution capable of handling product operations, analytics integration, and future AI-based enhancements.
+The project combines a responsive frontend with a FastAPI backend architecture and is designed with future AI-powered analytics integration in mind.
 
-This project was built as part of practical learning and portfolio development in full-stack development, backend systems, and intelligent retail solutions.
+This project focuses on practical implementation of:
+- Full-stack development
+- Backend API integration
+- Deployment workflows
+- Scalable project architecture
+- Real-world marketplace systems
 
 ---
 
