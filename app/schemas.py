@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field
-from typing import List, Any, Optional
+from typing import List, Optional
 from datetime import datetime
 
 # ------------------ USER ------------------
@@ -18,7 +18,7 @@ class UserLogin(BaseModel):
 class AddressBase(BaseModel):
     user_id: int
     address_line1: str
-    address_line2: str | None = None
+    address_line2: Optional[str] = None
     city: str
     state: str
     pincode: str
@@ -31,8 +31,7 @@ class Address(AddressBase):
     id: int
 
     class Config:
-        orm_mode = True
-
+        from_attributes = True
 
 
 # ------------------ PRODUCT ------------------
@@ -50,7 +49,7 @@ class ProductOut(ProductBase):
     id: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class InventoryUpdate(BaseModel):
     retailer_id: int
@@ -106,7 +105,7 @@ class Order(OrderBase):
     delivery_timestamp: Optional[datetime] = None
     email_sent: bool = False
     order_items: List[OrderItem] = Field(default_factory=list)
-    address: Optional[Address] = None  # Include full address
+    address: Optional[Address] = None
 
     class Config:
         from_attributes = True

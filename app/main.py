@@ -2,43 +2,67 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.database import engine, SessionLocal
 from app import models
-import requests
-import os
-
+import os, random
 
 # ------------------------------------------------------------
 # Initialize FastAPI
 # ------------------------------------------------------------
-app = FastAPI(title="Smart Market Network API")
+app = FastAPI(title="Smart Market Network (Localhost)")
 
 # ------------------------------------------------------------
-# CORS Configuration (read allowed origins from environment for production)
-# Set environment variable CORS_ORIGINS as a comma-separated list of allowed origins.
-# Example: CORS_ORIGINS=https://your-netlify-site.netlify.app,https://app.example.com
+# CORS Configuration
 # ------------------------------------------------------------
-default_origins = [
+# ✅ This allows Live Server / localhost access
+origins = [
     "http://127.0.0.1:5500",
     "http://localhost:5500",
+    "http://127.0.0.1:8080",
+    "http://localhost:8080",
 ]
-
-cors_env = os.getenv("CORS_ORIGINS", "")
-if cors_env:
-    origins = [o.strip() for o in cors_env.split(",") if o.strip()]
-else:
-    origins = default_origins
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=[
+        "http://127.0.0.1:5500",
+        "http://localhost:5500",
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
+
 # ------------------------------------------------------------
 # Database Setup
 # ------------------------------------------------------------
 models.Base.metadata.create_all(bind=engine)
+
+# ------------------------------------------------------------
+# Ensure Default Customer
+# ------------------------------------------------------------
+def ensure_default_customer():
+    db = SessionLocal()
+    try:
+        user = db.query(models.User).filter(models.User.username == "NandanaV").first()
+        if not user:
+            user = models.User(
+                username="NandanaV",
+                email="nandana@example.com",
+                password="nandana",  # ✅ match your working password
+                role="customer",
+                status="active"
+            )
+            db.add(user)
+            db.commit()
+            print("✅ Default customer 'NandanaV' created.")
+        else:
+            print("ℹ️ Default customer already exists.")
+    except Exception as e:
+        print("❌ Error creating default customer:", e)
+    finally:
+        db.close()
+
+ensure_default_customer()
 
 # ------------------------------------------------------------
 # Load Default Inventory (only if empty)
@@ -83,12 +107,6 @@ def load_inventory():
                 {"name": "Muffins", "price": 75, "quantity": 90},
                 {"name": "Buns", "price": 30, "quantity": 110},
             ],
-            "Beverages": [
-                {"name": "Green Tea", "price": 150, "quantity": 90},
-                {"name": "Coffee Powder", "price": 210, "quantity": 75},
-                {"name": "Soft Drink", "price": 45, "quantity": 300},
-                {"name": "Fruit Juice", "price": 70, "quantity": 180},
-            ],
             "Groceries": [
                 {"name": "Rice", "price": 68, "quantity": 500},
                 {"name": "Wheat Flour", "price": 50, "quantity": 400},
@@ -101,10 +119,9 @@ def load_inventory():
                 {"name": "Shampoo", "price": 120, "quantity": 150},
                 {"name": "Detergent", "price": 180, "quantity": 100},
                 {"name": "Dish Wash", "price": 90, "quantity": 120},
-            ]
+            ],
         }
 
-        import random
         for city in cities:
             for name in retailer_names:
                 user = models.User(
@@ -138,35 +155,34 @@ def load_inventory():
                         ))
 
         db.commit()
-        print("✅ Realistic retailers and product mix successfully added.")
+        print("✅ Inventory successfully loaded.")
     except Exception as e:
         print("❌ Error loading inventory:", e)
         db.rollback()
     finally:
         db.close()
 
-# Load once at startup
 load_inventory()
 
 # ------------------------------------------------------------
 # Routers Import and Registration
 # ------------------------------------------------------------
 from app.routers import customer, retailer, admin, orders, addresses, products, copilot
-from app.utils import telegram_utils  # ✅ Import AFTER app creation
+from app.utils import telegram_utils
 
-# ✅ Include all routers here
 app.include_router(customer.router)
 app.include_router(retailer.router)
 app.include_router(admin.router)
 app.include_router(orders.router)
 app.include_router(addresses.router)
-app.include_router(products.router, prefix="/api/products", tags=["Products"])
-app.include_router(copilot.router, prefix="/api/copilot", tags=["Copilot"])
-app.include_router(telegram_utils.router) 
+app.include_router(products.router)
+app.include_router(copilot.router)
+#app.include_router(telegram_utils.router)  # ✅ keep this line
+
 
 # ------------------------------------------------------------
 # Root Route
 # ------------------------------------------------------------
 @app.get("/")
 def read_root():
-    return {"msg": "✅ Smart Market Network backend is running!"}
+    return {"msg": "✅ Smart Market Localhost backend running successfully!"}

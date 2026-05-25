@@ -1,68 +1,59 @@
-from fastapi import APIRouter, Request
 import requests
+import os
+from fastapi import APIRouter, HTTPException
 
-router = APIRouter()
+router = APIRouter(prefix="/telegram", tags=["Telegram"])
 
-# 🔐 Telegram credentials
+# ⚙️ Replace these with your actual bot details
 TELEGRAM_BOT_TOKEN = "8595205177:AAFrr0-RNqCPGvf9pGOt_It5H8X2qAke610"
 TELEGRAM_CHAT_ID = "5965859600"
 
-# ------------------------------------------------------------
-# ✅ 1. Utility function (for direct message use)
-# ------------------------------------------------------------
-def send_telegram_message(message: str) -> bool:
-    """Send a simple text message directly to Telegram."""
+def send_telegram_notification(data: dict):
+    """
+    Sends a Telegram notification for a new order.
+    """
     try:
-        telegram_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
-        payload = {"chat_id": TELEGRAM_CHAT_ID, "text": message, "parse_mode": "Markdown"}
-        r = requests.post(telegram_url, json=payload)
-        if r.status_code == 200:
-            print("✅ Telegram message sent successfully.")
-            return True
+        message = (
+            f"📦 *New Order Alert!*\n"
+            f"🧾 Order No: {data.get('order_no', 'N/A')}\n"
+            f"👤 Customer ID: {data.get('customer_id')}\n"
+            f"🏪 Retailer ID: {data.get('retailer_id')}\n"
+            f"💰 Total: ₹{data.get('total')}\n"
+            f"📍 Address: {data.get('address', 'N/A')}\n"
+            f"🕒 Status: {data.get('status', 'Placed')}\n\n"
+            f"🛍️ *Items:*\n"
+        )
+
+        for item in data.get("items", []):
+            message += f"• {item.get('name', 'Unknown')} — {item.get('quantity')} × ₹{item.get('subtotal')}\n"
+
+        payload = {
+            "chat_id": TELEGRAM_CHAT_ID,
+            "text": message,
+            "parse_mode": "Markdown"
+        }
+
+        response = requests.post(
+            f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage",
+            data=payload
+        )
+
+        if response.status_code != 200:
+            print("⚠️ Telegram API error:", response.text)
         else:
-            print(f"⚠️ Telegram error {r.status_code}: {r.text}")
-            return False
+            print("✅ Telegram message sent successfully!")
+
     except Exception as e:
-        print(f"❌ Telegram send failed: {e}")
-        return False
+        print("⚠️ Telegram send failed:", e)
 
 
-# ------------------------------------------------------------
-# ✅ 2. REST API route (for structured JSON order notifications)
-# ------------------------------------------------------------
-@router.post("/telegram/notify")
-async def telegram_notify(request: Request):
-    """Receive structured order data and send formatted Telegram message."""
-    data = await request.json()
-
-    order_no = data.get("order_no", "N/A")
-    customer_id = data.get("customer_id", "N/A")
-    retailer_id = data.get("retailer_id", "N/A")
-    total = data.get("total", "0.00")
-    address = data.get("address", "Not provided")
-    status = data.get("status", "Placed")
-    time = data.get("time", "N/A")
-    items = data.get("items", [])
-
-    products_text = "\n".join(
-        [f"• {item['name']} (x{item['quantity']}) - ₹{item['subtotal']}" for item in items]
-    ) or "No items found."
-
-    message = (
-        f"🛍️ *New Order Received!*\n\n"
-        f"📦 *Order ID:* `{order_no}`\n"
-        f"👤 *Customer:* `{customer_id}`\n"
-        f"🏬 *Retailer:* `{retailer_id}`\n"
-        f"💰 *Total:* ₹{total}\n"
-        f"🕒 *Time:* {time}\n\n"
-        f"🧾 *Items:*\n{products_text}\n\n"
-        f"📍 *Address:* {address}\n\n"
-        f"✅ *Status:* {status}"
-    )
-
-    # Send to Telegram
-    telegram_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
-    payload = {"chat_id": TELEGRAM_CHAT_ID, "text": message, "parse_mode": "Markdown"}
-    r = requests.post(telegram_url, json=payload)
-
-    return {"status": "sent" if r.status_code == 200 else "failed", "code": r.status_code}
+@router.post("/notify")
+def telegram_notify(data: dict):
+    """
+    Public endpoint for Telegram notifications.
+    """
+    try:
+        send_telegram_notification(data)
+        return {"message": "Telegram notification sent successfully!"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))

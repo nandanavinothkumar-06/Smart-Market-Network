@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.database import SessionLocal
 from app import models, schemas
-from app.utils.telegram_utils import send_telegram_message  # ✅ central utility
+from app.utils.telegram_utils import send_telegram_notification
 import requests
 
 router = APIRouter(prefix="/admin", tags=["Admin"])

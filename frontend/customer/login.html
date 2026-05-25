@@ -7,7 +7,6 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-
     :root {
       --primary: #1a3a5f;
       --secondary: #2c5c7a;
@@ -20,23 +19,27 @@
       --border: #e2e8f0;
       --error: #e53e3e;
     }
-
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
       min-height: 100vh;
-      display: flex; align-items: center; justify-content: center;
-      padding: 40px; position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+      position: relative;
     }
-
     body::before {
       content: '';
-      position: absolute; top: 0; left: 0;
-      width: 100%; height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
       background: url('https://source.unsplash.com/1600x900/?shopping,customer') no-repeat center/cover;
-      opacity: 0.1; z-index: -1;
+      opacity: 0.1;
+      z-index: -1;
     }
-
     .container {
       background: var(--light);
       border-radius: 16px;
@@ -49,19 +52,19 @@
       position: relative;
       border: 1px solid var(--border);
     }
-
     .container::before {
       content: '';
-      position: absolute; top: 0; left: 0;
-      width: 100%; height: 6px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 6px;
       background: linear-gradient(to right, var(--accent), var(--success));
     }
-
     @keyframes fadeInUp {
       from { opacity: 0; transform: translateY(30px); }
       to { opacity: 1; transform: translateY(0); }
     }
-
     .logo {
       font-size: 1.8rem;
       color: var(--primary);
@@ -72,13 +75,7 @@
       gap: 12px;
       font-weight: 700;
     }
-    .logo i {
-      color: var(--accent);
-      background: rgba(58, 155, 220, 0.1);
-      padding: 10px;
-      border-radius: 12px;
-    }
-
+    .logo i { color: var(--accent); background: rgba(58, 155, 220, 0.1); padding: 10px; border-radius: 12px; }
     h1 {
       font-size: 2.2rem;
       color: var(--primary);
@@ -88,7 +85,6 @@
       position: relative;
       display: inline-block;
     }
-
     h1::after {
       content: '';
       position: absolute;
@@ -99,7 +95,6 @@
       background: linear-gradient(to right, var(--accent), var(--success));
       border-radius: 3px;
     }
-
     .form-container {
       margin-bottom: 25px;
       padding: 25px;
@@ -108,14 +103,15 @@
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
       border: 1px solid var(--border);
     }
-
     .input-group { margin-bottom: 20px; text-align: left; }
     .input-wrapper { position: relative; }
     .input-wrapper i {
-      position: absolute; left: 15px; top: 50%;
-      transform: translateY(-50%); color: var(--text-light);
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-light);
     }
-
     input {
       width: 100%;
       padding: 14px 14px 14px 45px;
@@ -125,13 +121,11 @@
       transition: all 0.3s ease;
       background: var(--light);
     }
-
     input:focus {
       outline: none;
       border-color: var(--accent);
       box-shadow: 0 0 0 3px rgba(58, 155, 220, 0.2);
     }
-
     .button {
       display: block;
       width: 100%;
@@ -150,12 +144,10 @@
       overflow: hidden;
       box-shadow: 0 4px 12px rgba(58, 155, 220, 0.3);
     }
-
     .button:hover {
       transform: translateY(-3px);
       box-shadow: 0 8px 20px rgba(58, 155, 220, 0.4);
     }
-
     #message {
       margin: 20px 0;
       padding: 12px;
@@ -164,45 +156,20 @@
       text-align: center;
       display: none;
     }
-
     .message-success {
       background: rgba(56, 178, 172, 0.1);
       color: var(--success);
       border: 1px solid rgba(56, 178, 172, 0.3);
       display: block !important;
     }
-
     .message-error {
       background: rgba(229, 62, 62, 0.1);
       color: var(--error);
       border: 1px solid rgba(229, 62, 62, 0.3);
       display: block !important;
     }
-
-    .link {
-      display: inline-block;
-      margin-top: 20px;
-      color: var(--accent);
-      text-decoration: none;
-      font-weight: 500;
-      transition: color 0.3s ease;
-    }
-
-    .link:hover { color: var(--success); }
-
-    .footer-note {
-      margin-top: 30px;
-      font-size: 0.9rem;
-      color: var(--text-light);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-    }
-    .footer-note i { color: var(--accent); }
   </style>
 </head>
-
 <body>
   <div class="container">
     <div class="logo">
@@ -233,17 +200,14 @@
       </form>
 
       <div id="message"></div>
-      <a href="register.html" class="link">Don't have an account? Register here</a>
-    </div>
-
-    <div class="footer-note">
-      <i class="far fa-copyright"></i>
-      <span>2025 Smart Market System. All rights reserved.</span>
     </div>
   </div>
 
-  <script>
-    const API_URL = "http://127.0.0.1:8080/customer/login";
+  <script type="module">
+     import BASE_URL from "../js/config.js";
+
+
+    const API_URL = `${BASE_URL}/customer/login`;
 
     document.getElementById("loginForm").addEventListener("submit", async (e) => {
       e.preventDefault();
@@ -265,27 +229,47 @@
           body: JSON.stringify({ username, password }),
         });
 
-        let data = {};
-        try {
-          data = await res.json();
-        } catch {
-          console.warn("Non-JSON response from backend, continuing...");
-        }
+        const data = await res.json();
+console.log("🧩 Backend response:", data);
 
-        if (!res.ok) throw new Error(data.detail || "Invalid credentials");
+if (!res.ok) throw new Error(data.detail || "Invalid credentials");
 
-        // ✅ Save session
-        localStorage.setItem("customer_username", username);
-        localStorage.setItem("customer_logged_in", "true");
+// Prevent login if already logged in
+if (localStorage.getItem("customer_logged_in") === "true") {
+  console.log("✅ Already logged in, redirecting to cities...");
+  window.location.href = "./cities.html";
+}
 
-        // ✅ Animated message + redirect
-        messageDiv.textContent = "✅ Login successful! Redirecting...";
-        messageDiv.className = "message-success";
+// ✅ Robust ID extraction
+// ✅ Ensure user ID is always saved
+let userId =
+  data.user_id ||
+  data.id ||
+  (data.user && data.user.id) ||
+  (data.customer && data.customer.id) ||
+  1; // fallback ID for safety
 
-        console.log("Redirecting to cities.html...");
-        setTimeout(() => {
-          window.location.href = "cities.html";
-        }, 1200);
+localStorage.setItem("customer_username", username);
+localStorage.setItem("customer_logged_in", "true");
+localStorage.setItem("customer_id", userId.toString());
+
+
+console.log("✅ Stored login info:", {
+  username: localStorage.getItem("customer_username"),
+  logged_in: localStorage.getItem("customer_logged_in"),
+  id: localStorage.getItem("customer_id"),
+});
+
+
+messageDiv.textContent = "✅ Login successful! Redirecting...";
+messageDiv.className = "message-success";
+
+setTimeout(() => {
+  window.location.href = "./cities.html"; // ✅ relative path fix
+}, 1000);
+
+
+
       } catch (err) {
         console.error("Login error:", err);
         messageDiv.textContent = "❌ " + (err.message || "Network error");
