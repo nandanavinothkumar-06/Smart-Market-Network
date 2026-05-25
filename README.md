@@ -322,7 +322,7 @@ VIT Vellore
 Repository Link:
 
 ```bash
-https://github.com/YOUR_USERNAME/Smart-Market-Network
+[(https://github.com/nandanavinothkumar-06/Smart-Market-Network)]
 ```
 
 ---
