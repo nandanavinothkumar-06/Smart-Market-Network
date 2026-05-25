@@ -286,6 +286,12 @@ This project helped in understanding:
 <img width="1050" height="623" alt="image" src="https://github.com/user-attachments/assets/7c2882c8-293a-46f9-8f1d-21a9ced463b1" />
 <img width="1050" height="624" alt="image" src="https://github.com/user-attachments/assets/2eddcbd9-ccea-4f56-9ae0-546a2fb84892" />
 <img width="1919" height="1021" alt="image" src="https://github.com/user-attachments/assets/33afabc9-2873-4b1c-87f2-b833398900c7" />
+<img width="1050" height="623" alt="image" src="https://github.com/user-attachments/assets/9bb916f0-7563-40f9-92f7-f32152865c4f" />
+<img width="1050" height="483" alt="image" src="https://github.com/user-attachments/assets/df4e97ca-5acc-44ef-8770-c065df5f3ddf" />
+<img width="1050" height="624" alt="image" src="https://github.com/user-attachments/assets/f929a017-775b-415c-a240-685dfbe399f7" />
+
+
+
 
 
 
